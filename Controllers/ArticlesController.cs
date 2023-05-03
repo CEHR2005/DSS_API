@@ -14,9 +14,9 @@ namespace DSS_API.Controllers
     [ApiController]
     public class ArticlesController : ControllerBase
     {
-        private readonly TodoContext _context;
+        private readonly DataContext _context;
 
-        public ArticlesController(TodoContext context)
+        public ArticlesController(DataContext context)
         {
             _context = context;
         }

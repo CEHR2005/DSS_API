@@ -6,27 +6,13 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DSS_API.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateTableModels : Migration
+    public partial class CreateTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "TodoItems",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    IsComplete = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TodoItems", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserItems",
+                name: "User",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -36,11 +22,11 @@ namespace DSS_API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserItems", x => x.Id);
+                    table.PrimaryKey("PK_User", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ArticleItems",
+                name: "Article",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -52,17 +38,17 @@ namespace DSS_API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ArticleItems", x => x.Id);
+                    table.PrimaryKey("PK_Article", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ArticleItems_UserItems_UserId",
+                        name: "FK_Article_User_UserId",
                         column: x => x.UserId,
-                        principalTable: "UserItems",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "CommentItems",
+                name: "Comment",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -73,34 +59,34 @@ namespace DSS_API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CommentItems", x => x.Id);
+                    table.PrimaryKey("PK_Comment", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CommentItems_ArticleItems_ArticleId",
+                        name: "FK_Comment_Article_ArticleId",
                         column: x => x.ArticleId,
-                        principalTable: "ArticleItems",
+                        principalTable: "Article",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CommentItems_UserItems_UserId",
+                        name: "FK_Comment_User_UserId",
                         column: x => x.UserId,
-                        principalTable: "UserItems",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ArticleItems_UserId",
-                table: "ArticleItems",
+                name: "IX_Article_UserId",
+                table: "Article",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CommentItems_ArticleId",
-                table: "CommentItems",
+                name: "IX_Comment_ArticleId",
+                table: "Comment",
                 column: "ArticleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CommentItems_UserId",
-                table: "CommentItems",
+                name: "IX_Comment_UserId",
+                table: "Comment",
                 column: "UserId");
         }
 
@@ -108,16 +94,13 @@ namespace DSS_API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CommentItems");
+                name: "Comment");
 
             migrationBuilder.DropTable(
-                name: "TodoItems");
+                name: "Article");
 
             migrationBuilder.DropTable(
-                name: "ArticleItems");
-
-            migrationBuilder.DropTable(
-                name: "UserItems");
+                name: "User");
         }
     }
 }

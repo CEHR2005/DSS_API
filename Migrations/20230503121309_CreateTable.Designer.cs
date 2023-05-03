@@ -10,8 +10,8 @@ using TodoApi.Models;
 
 namespace DSS_API.Migrations
 {
-    [DbContext(typeof(TodoContext))]
-    [Migration("20230503120013_CreateTable")]
+    [DbContext(typeof(DataContext))]
+    [Migration("20230503121309_CreateTable")]
     partial class CreateTable
     {
         /// <inheritdoc />
@@ -79,25 +79,6 @@ namespace DSS_API.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Comment");
-                });
-
-            modelBuilder.Entity("DSS_API.Models.TodoItem", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<bool>("IsComplete")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TodoItems");
                 });
 
             modelBuilder.Entity("DSS_API.Models.User", b =>

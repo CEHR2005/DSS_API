@@ -14,9 +14,9 @@ namespace DSS_API.Controllers
     [ApiController]
     public class CommentsController : ControllerBase
     {
-        private readonly TodoContext _context;
+        private readonly DataContext _context;
 
-        public CommentsController(TodoContext context)
+        public CommentsController(DataContext context)
         {
             _context = context;
         }

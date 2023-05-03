@@ -4,14 +4,13 @@ using System.Collections.Generic;
 
 namespace TodoApi.Models;
 
-public class TodoContext : DbContext
+public class DataContext : DbContext
 {
-    public TodoContext(DbContextOptions<TodoContext> options)
+    public DataContext(DbContextOptions<DataContext> options)
     : base(options)
     {
     }
 
-    public DbSet<TodoItem> TodoItems { get; set; } = null!;
     public DbSet<User> User { get; set; } = null!;
 
     public DbSet<Article> Article { get; set; } = null!;

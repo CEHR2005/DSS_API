@@ -32,7 +32,7 @@ namespace DSS_API.Controllers
         }
 
         // GET: api/Comments/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetComment")]
         public async Task<ActionResult<Comment>> GetComment(int id)
         {
             var comment = await _context.Comment
@@ -81,18 +81,18 @@ namespace DSS_API.Controllers
 
         // POST: api/Comments
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Comment>> PostComment(Comment comment)
-        {
-          if (_context.Comment == null)
-          {
+[HttpPost]
+public async Task<ActionResult<Comment>> PostComment(Comment comment)
+{
+    if (_context.Comment == null)
+    {
               return Problem("Entity set 'TodoContext.CommentItems'  is null.");
-          }
-            _context.Comment.Add(comment);
-            await _context.SaveChangesAsync();
+    }
+    _context.Comment.Add(comment);
+    await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetComment", new { id = comment.Id }, comment);
-        }
+    return CreatedAtAction("GetComment", new { id = comment.Id }, comment);
+}
 
         // DELETE: api/Comments/5
         [HttpDelete("{id}")]

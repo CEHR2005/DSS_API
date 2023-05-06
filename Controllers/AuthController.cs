@@ -65,16 +65,26 @@ namespace DSS_API.Controllers
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var expires = DateTime.Now.AddDays(Convert.ToDouble(_configuration["Jwt:ExpireDays"]));
 
-            var token = new JwtSecurityToken(
+            var header = new JwtHeader(creds)
+            {
+                // Добавьте идентификатор ключа здесь
+                {"kid", _configuration["Jwt:KeyIdentifier"]}
+            };
+
+            var payload = new JwtPayload(
                 _configuration["Jwt:Issuer"],
                 _configuration["Jwt:Audience"],
                 claims,
-                expires: expires,
-                signingCredentials: creds
+                null,
+                expires
             );
+
+            var token = new JwtSecurityToken(header, payload);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+
 
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterModel registerModel)

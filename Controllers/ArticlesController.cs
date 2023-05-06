@@ -25,22 +25,22 @@ namespace DSS_API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Article>>> GetArticleItems()
         {
-          if (_context.Article == null)
-          {
-              return NotFound();
-          }
-            return await _context.Article.ToListAsync();
+            return await _context.Article
+                .Include(a => a.User)
+                .Include(a => a.Comments)
+                .ThenInclude(c => c.User)
+                .ToListAsync();
         }
 
         // GET: api/Articles/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Article>> GetArticle(int id)
         {
-          if (_context.Article == null)
-          {
-              return NotFound();
-          }
-            var article = await _context.Article.FindAsync(id);
+            var article = await _context.Article
+                .Include(a => a.User)
+                .Include(a => a.Comments)
+                .ThenInclude(c => c.User)
+                .FirstOrDefaultAsync(a => a.Id == id);
 
             if (article == null)
             {
@@ -49,9 +49,23 @@ namespace DSS_API.Controllers
 
             return article;
         }
+        [HttpGet("{id}/Comments")]
+        public async Task<ActionResult<IEnumerable<Comment>>> GetCommentsForArticle(int id)
+        {
+            var article = await _context.Article.FindAsync(id);
+
+            if (article == null)
+            {
+                return NotFound();
+            }
+
+            return await _context.Comment
+                .Include(c => c.User)
+                .Where(c => c.ArticleId == id)
+                .ToListAsync();
+        }
 
         // PUT: api/Articles/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutArticle(int id, Article article)
         {

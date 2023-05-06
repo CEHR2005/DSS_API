@@ -25,22 +25,20 @@ namespace DSS_API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Comment>>> GetCommentItems()
         {
-          if (_context.Comment == null)
-          {
-              return NotFound();
-          }
-            return await _context.Comment.ToListAsync();
+            return await _context.Comment
+                .Include(c => c.User)
+                .Include(c => c.Article)
+                .ToListAsync();
         }
 
         // GET: api/Comments/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Comment>> GetComment(int id)
         {
-          if (_context.Comment == null)
-          {
-              return NotFound();
-          }
-            var comment = await _context.Comment.FindAsync(id);
+            var comment = await _context.Comment
+                .Include(c => c.User)
+                .Include(c => c.Article)
+                .FirstOrDefaultAsync(c => c.Id == id);
 
             if (comment == null)
             {

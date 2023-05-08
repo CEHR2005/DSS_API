@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using DSS_API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -85,25 +86,25 @@ namespace DSS_API.Controllers
         }
 
 
-
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterModel registerModel)
         {
             if (registerModel.Password != registerModel.ConfirmPassword)
             {
-                return BadRequest("Пароли не совпадают.");
+                return BadRequest("Password mismatch.");
             }
 
             if (await _context.User.AnyAsync(u => u.Username == registerModel.Username))
             {
-                return BadRequest("Пользователь с таким именем уже существует.");
+                return BadRequest("A user with the same name already exists.");
             }
 
             var newUser = new User { Username = registerModel.Username, Password = registerModel.Password };
             _context.User.Add(newUser);
             await _context.SaveChangesAsync();
 
-            return Ok("Пользователь успешно зарегистрирован.");
+            return Ok("User successfully registered.");
         }
     }
 }
